@@ -18,3 +18,19 @@ workflow SmallRna {
     }
 
 }
+
+task SampleConfigToFastQLists {
+    input {
+        File sampleConfig
+    }
+
+    command <<<
+    python <<CODE
+    import yaml
+
+    sample_config = yaml.load("~{sampleConfig}")
+    samples = sample_config.get("samples", [])
+
+    CODE
+    >>>
+}
