@@ -2,7 +2,8 @@
 
 workflow SmallRna {
     input {
-
+        File sampleConfigFile
+        String outputDir = "."
     }
 
     call common.YamlToJson as ConvertSampleConfig {
@@ -11,8 +12,7 @@ workflow SmallRna {
             outputJson = outputDir + "/samples.json"
     }
     SampleConfig sampleConfig = read_json(ConvertSampleConfig.json)
-    Array[Sample] allSamples = flatten([samples, sampleConfig.samples])
-
+    Array[Sample] allSamples = sampleConfig.samples
     output {
 
     }
