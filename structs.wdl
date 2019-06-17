@@ -4,17 +4,13 @@ import "tasks/common.wdl" as common
 
 struct Readgroup {
     String id
+    String lib_id
     FastqPair reads
-}
-
-struct Library {
-    String id
-    Array[Readgroup] readgroups
 }
 
 struct Sample {
     String id
-    Array[Library] libraries
+    Array[ReadGroup] readgroups
 }
 
 struct SampleConfig {
