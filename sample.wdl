@@ -36,7 +36,9 @@ workflow SampleWorkflow {
         Array[File]+ gtfFiles
     }
 
-    scatter (readgroup in sample.readgroups) {
+    Array[Readgroup] readgroups = sample.readgroups
+
+    scatter (readgroup in readgroups) {
         call QC.QC as QualityControl {
             input:
                 read1 = readgroup.R1,
@@ -44,22 +46,23 @@ workflow SampleWorkflow {
                 readgroupName = readgroup.id,
                 outputDir = outputDir + "/" + readgroup.id,
         }
-    }
 
-    call bowtie.Bowtie as Bowtie {
-        input:
-            readsUpstream = QualityControl.qcRead1,
-            readsDownstream = QualityControl.qcRead2,
-            indexFiles = bowtieIndexFiles,
-            sam = true,
-            samRG = "@RG\\tID:~{sample.id}-~{readgroup.lib_id}-~{readgroup.id}\\tLB:~{readgroup.lib_id}\\tSM:~{sample.id}\\tPL:~{platform}"
+
+        call bowtie.Bowtie as Bowtie {
+            input:
+                readsUpstream = [QualityControl.qcRead1],
+                readsDownstream = if defined(readgroup.R2) then [QualityControl.qcRead2] else readgroup.R2,  # FIXME: else None
+                indexFiles = bowtieIndexFiles,
+                sam = true,
+                samRG = "@RG\\tID:~{sample.id}-~{readgroup.lib_id}-~{readgroup.id}\\tLB:~{readgroup.lib_id}\\tSM:~{sample.id}\\tPL:~{platform}"
+        }
     }
 
     scatter (gtfFile in gtfFiles) {
         call htseq.HTSeqCount {
             input:
-                inputBams = [Bowtie.outputBam],
-                inputBamsIndex = [Bowtie.outputBamIndex],
+                inputBams = Bowtie.outputBam,
+                inputBamsIndex = Bowtie.outputBamIndex,
                 gtfFile = gtfFile,
                 outputTable = outputDir + "/" + basename(gtfFile, "\.gtf") + ".tsv"
         }

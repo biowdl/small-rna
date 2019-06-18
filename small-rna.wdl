@@ -46,7 +46,7 @@ workflow SmallRna {
     scatter (sample in allSamples) {
         call SampleWorkflow.SampleWorkflow as sampleWorkflow {
             input:
-                Sample = sample,
+                sample = sample,
                 outputDir = outputDir + "/" + sample.id,
                 bowtieIndexFiles = bowtieIndexFiles,
                 platform = platform,
