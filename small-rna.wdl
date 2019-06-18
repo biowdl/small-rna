@@ -39,9 +39,9 @@ workflow SmallRna {
             yaml = sampleConfigFile,
             outputJson = outputDir + "/samples.json"
     }
+
     SampleConfig sampleConfig = read_json(ConvertSampleConfig.json)
     Array[Sample] allSamples = sampleConfig.samples
-
 
     scatter (sample in allSamples) {
         call SampleWorkflow.SampleWorkflow as sampleWorkflow {
@@ -52,7 +52,10 @@ workflow SmallRna {
                 platform = platform,
                 gtfFiles = gtfFiles
         }
+    }
 
+    output {
+        Array[File] countTables = flatten(sampleWorkflow.countTables)
     }
 }
 

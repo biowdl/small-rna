@@ -39,12 +39,13 @@ workflow SampleWorkflow {
     Array[Readgroup] readgroups = sample.readgroups
 
     scatter (readgroup in readgroups) {
+        String readgroupIdentifier = readgroup.lib_id + "-" + readgroup.id
         call QC.QC as QualityControl {
             input:
                 read1 = readgroup.R1,
                 read2 = readgroup.R2,
                 readgroupName = readgroup.id,
-                outputDir = outputDir + "/" + readgroup.id,
+                outputDir = outputDir + "/" + readgroupIdentifier,
         }
 
 
@@ -55,7 +56,7 @@ workflow SampleWorkflow {
                 indexFiles = bowtieIndexFiles,
                 sam = true,
                 samRG = "ID:~{sample.id}-~{readgroup.lib_id}-~{readgroup.id}\tLB:~{readgroup.lib_id}\tSM:~{sample.id}\tPL:~{platform}",
-                outputPath = outputDir + "/" + readgroup.id  + "/" + readgroup.id + ".bam"
+                outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam"
         }
     }
 
@@ -65,7 +66,7 @@ workflow SampleWorkflow {
                 inputBams = Bowtie.outputBam,
                 inputBamsIndex = Bowtie.outputBamIndex,
                 gtfFile = gtfFile,
-                outputTable = outputDir + "/" + basename(gtfFile, "\.gtf") + ".tsv"
+                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv"
         }
     }
 
