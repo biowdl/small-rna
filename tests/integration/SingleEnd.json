@@ -11,5 +11,6 @@
   "SmallRna.gtfFiles": [
     "tests/data/ensembl.gtf",
     "tests/data/hsa.gff3"
-  ]
+  ],
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.QC.Cutadapt.adapter": "TGGAATTCTCGG"
 }
