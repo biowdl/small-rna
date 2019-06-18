@@ -1,0 +1,15 @@
+- name: SingleEndAbsoluteFolder
+  tags:
+    - integration
+  command: >-
+    bash -c '
+    TEST_JSON=tests/integration/SingleEnd.json ;
+    sed -i "2i\"SmallRna.outputDir\":\"$PWD/test-output\"," $TEST_JSON ;
+    cromwell run -i $TEST_JSON small-rna.wdl'
+  files: []
+
+- name: SingleEndRelativeFolder
+  tags:
+    - integration
+  command: cromwell run -i tests/integration/SingleEnd.json -o tests/cromwell_options.json small-rna.wdl
+  files: []

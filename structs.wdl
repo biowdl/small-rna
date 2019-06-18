@@ -10,7 +10,7 @@ struct Readgroup {
 
 struct Sample {
     String id
-    Array[ReadGroup] readgroups
+    Array[Readgroup] readgroups
 }
 
 struct SampleConfig {

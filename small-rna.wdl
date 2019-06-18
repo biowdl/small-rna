@@ -48,7 +48,7 @@ workflow SmallRna {
 task SampleConfigToSampleReadgroupLists {
     input {
         File yaml
-        String outputJson = basename(yaml, "\.ya?ml$") + ".json"
+        String outputJson = "samples.json"
         String dockerImage = "biowdl/pyyaml:3.13-py37-slim"
     }
 
@@ -70,8 +70,9 @@ task SampleConfigToSampleReadgroupLists {
                     new_readgroup['lib_id'] = library['id']
                     new_sample['readgroups'].append(new_readgroup)
             sample_rg_lists.append(new_sample)
+        sample_mod_config = {"samples": sample_rg_lists}
         with open("~{outputJson}", "w") as output_json:
-            json.dump(content, output_json)
+            json.dump(sample_mod_config, output_json)
         CODE
     >>>
 
