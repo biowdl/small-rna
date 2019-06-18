@@ -23,11 +23,15 @@ version 1.0
 # SOFTWARE.
 
 import "structs.wdl" as structs
+import "sample.wdl" as SampleWorkflow
 
 workflow SmallRna {
     input {
         File sampleConfigFile
         String outputDir = "."
+        Array[File] bowtieIndexFiles
+        String? platform = "illumina"
+        Array[File] gtfFiles
     }
 
     call SampleConfigToSampleReadgroupLists as ConvertSampleConfig {
@@ -39,10 +43,17 @@ workflow SmallRna {
     Array[Sample] allSamples = sampleConfig.samples
 
 
-    output {
-        Array[Sample] samples = allSamples
-    }
+    scatter (sample in allSamples) {
+        call SampleWorkflow.SampleWorkflow as sampleWorkflow {
+            input:
+                Sample = sample,
+                outputDir = outputDir + "/" + sample.id,
+                bowtieIndexFiles = bowtieIndexFiles,
+                platform = platform,
+                gtfFiles = gtfFiles
+        }
 
+    }
 }
 
 task SampleConfigToSampleReadgroupLists {

@@ -1,11 +1,10 @@
 version 1.0
 
-import "tasks/common.wdl" as common
-
 struct Readgroup {
     String id
     String lib_id
-    FastqPair reads
+    File R1
+    File? R2
 }
 
 struct Sample {
