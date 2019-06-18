@@ -1,0 +1,13 @@
+##gff-version 3
+##date 2018-3-5
+#
+# Chromosomal coordinates of Homo sapiens microRNAs
+# microRNAs:               miRBase v22
+# genome-build-id:         GRCh38
+# genome-build-accession:  NCBI_Assembly:GCA_000001405.15
+#
+# Hairpin precursor sequences have type "miRNA_primary_transcript". 
+# Note, these sequences do not represent the full primary transcript, 
+# rather a predicted stem-loop portion that includes the precursor 
+# miRNA. Mature sequences have type "miRNA".
+#

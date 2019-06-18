@@ -73,15 +73,17 @@ task SampleConfigToSampleReadgroupLists {
             sample_config = yaml.load(input_yaml)
 
         sample_rg_lists = []
-        for sample in sample_config.get("samples", []):
+        for sample in sample_config["samples"]:
             new_sample = {"readgroups": [], "id": sample['id']}
-            for library in sample.get("libraries", []):
-                for readgroup in library.get("readgroups", []):
-                    new_readgroup = readgroup
-                    new_readgroup['lib_id'] = library['id']
+            for library in sample["libraries"]:
+                for readgroup in library["readgroups"]:
+                    new_readgroup = {'lib_id': library['id'], 'id': readgroup['id']}
+                    # Having a nested "reads" struct does not make any sense.
+                    new_readgroup.update(readgroup["reads"])
                     new_sample['readgroups'].append(new_readgroup)
             sample_rg_lists.append(new_sample)
         sample_mod_config = {"samples": sample_rg_lists}
+        print(sample_mod_config)
         with open("~{outputJson}", "w") as output_json:
             json.dump(sample_mod_config, output_json)
         CODE

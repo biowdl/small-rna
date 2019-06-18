@@ -1,3 +1,15 @@
 {
-  "SmallRna.sampleConfigFile": "tests/samplesheets/SingleEnd.yml"
+  "SmallRna.sampleConfigFile": "tests/samplesheets/SingleEnd.yml",
+  "SmallRna.bowtieIndexFiles": [
+    "tests/data/reference/bowtie/reference.1.ebwt",
+    "tests/data/reference/bowtie/reference.2.ebwt",
+    "tests/data/reference/bowtie/reference.3.ebwt",
+    "tests/data/reference/bowtie/reference.4.ebwt",
+    "tests/data/reference/bowtie/reference.rev.1.ebwt",
+    "tests/data/reference/bowtie/reference.rev.2.ebwt"
+  ],
+  "SmallRna.gtfFiles": [
+    "tests/data/ensembl.gtf",
+    "tests/data/hsa.gff3"
+  ]
 }
