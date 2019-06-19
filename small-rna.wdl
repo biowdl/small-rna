@@ -29,9 +29,10 @@ workflow SmallRna {
     input {
         File sampleConfigFile
         String outputDir = "."
-        Array[File] bowtieIndexFiles
+        Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
-        Array[File] gtfFiles
+        Array[File]+ gtfFiles
+        String stranded = "no"
     }
 
     call SampleConfigToSampleReadgroupLists as ConvertSampleConfig {
@@ -50,7 +51,8 @@ workflow SmallRna {
                 outputDir = outputDir + "/" + sample.id,
                 bowtieIndexFiles = bowtieIndexFiles,
                 platform = platform,
-                gtfFiles = gtfFiles
+                gtfFiles = gtfFiles,
+                stranded = stranded
         }
     }
 

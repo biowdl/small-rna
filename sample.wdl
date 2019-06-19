@@ -31,9 +31,10 @@ workflow SampleWorkflow {
     input {
         Sample sample
         String outputDir = "."
-        Array[File] bowtieIndexFiles
+        Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
         Array[File]+ gtfFiles
+        String stranded = "no"
     }
 
     Array[Readgroup] readgroups = sample.readgroups
@@ -54,18 +55,18 @@ workflow SampleWorkflow {
                 readsUpstream = [QualityControl.qcRead1],
                 readsDownstream = if defined(readgroup.R2) then [QualityControl.qcRead2] else readgroup.R2,  # FIXME: else None
                 indexFiles = bowtieIndexFiles,
-                sam = true,
                 samRG = "ID:~{sample.id}-~{readgroup.lib_id}-~{readgroup.id}\tLB:~{readgroup.lib_id}\tSM:~{sample.id}\tPL:~{platform}",
                 outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam"
         }
     }
 
     scatter (gtfFile in gtfFiles) {
-        call htseq.HTSeqCount {
+        call htseq.HTSeqCount as HTSeqCount {
             input:
                 inputBams = Bowtie.outputBam,
                 inputBamsIndex = Bowtie.outputBamIndex,
                 gtfFile = gtfFile,
+                stranded = stranded,
                 outputTable = outputDir + "/" + basename(gtfFile) + ".tsv"
         }
     }
