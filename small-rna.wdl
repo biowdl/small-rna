@@ -24,6 +24,7 @@ version 1.0
 
 import "structs.wdl" as structs
 import "sample.wdl" as SampleWorkflow
+import "tasks/multiqc.wdl" as multiqc
 
 workflow SmallRna {
     input {
@@ -33,6 +34,7 @@ workflow SmallRna {
         String? platform = "illumina"
         Array[File]+ gtfFiles
         String stranded = "no"
+        Boolean runMultiQC = if (outputDir == ".") then false else true
     }
 
     call SampleConfigToSampleReadgroupLists as ConvertSampleConfig {
@@ -53,6 +55,16 @@ workflow SmallRna {
                 platform = platform,
                 gtfFiles = gtfFiles,
                 stranded = stranded
+        }
+    }
+
+    if (runMultiQC) {
+        call multiqc.MultiQC as multiqcTask {
+            input:
+                # Multiqc will only run if these files are created.
+                finished = sampleWorkflow.finished,
+                outDir = outputDir,
+                analysisDirectory = outputDir
         }
     }
 

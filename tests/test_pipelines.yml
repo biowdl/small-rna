@@ -37,3 +37,4 @@
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R1_fastqc.html"
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R2_fastqc.html"
     - path: "test-output/SRR5087327/lib1-rg1/lib1-rg1.bam"
+    - path: "test-output/multiqc_report.html"

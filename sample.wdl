@@ -78,5 +78,6 @@ workflow SampleWorkflow {
     output {
         Array[File] countTables = HTSeqCount.counts
         Array[File] qcReports = flatten(QualityControl.reports)
+        Boolean finished = true
     }
 }
