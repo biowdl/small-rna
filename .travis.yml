@@ -27,7 +27,8 @@ script:
 
 matrix:
   include:
-    - env: TEST=SingleEndRelativeFolder
+    - env: TEST=SingleEnd
+    - env: TEST=PairedEnd
     - env:
       - TEST=SingleEndAbsoluteFolder
       - _JAVA_OPTIONS="-Dconfig.file=tests/cromwell.conf"

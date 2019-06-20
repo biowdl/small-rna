@@ -1,0 +1,9 @@
+samples:
+  - id: SRR5987327
+    libraries:
+      - id: lib1
+        readgroups:
+          - id: rg1
+            reads:
+              R1: tests/data/SRR5087327_R1.fq.gz
+              R2: tests/data/SRR5087327_R2.fq.gz
