@@ -1,5 +1,5 @@
 samples:
-  - id: SRR5987327
+  - id: SRR5087327
     libraries:
       - id: lib1
         readgroups:

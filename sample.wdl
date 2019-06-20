@@ -53,7 +53,7 @@ workflow SampleWorkflow {
         call bowtie.Bowtie as Bowtie {
             input:
                 readsUpstream = [QualityControl.qcRead1],
-                readsDownstream = if defined(readgroup.R2) then [QualityControl.qcRead2] else readgroup.R2,  # FIXME: else None
+                readsDownstream = if defined(readgroup.R2) then select_all([QualityControl.qcRead2]) else readgroup.R2,  # FIXME: else None
                 indexFiles = bowtieIndexFiles,
                 samRG = "ID:~{sample.id}-~{readgroup.lib_id}-~{readgroup.id}\tLB:~{readgroup.lib_id}\tSM:~{sample.id}\tPL:~{platform}",
                 outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam"
