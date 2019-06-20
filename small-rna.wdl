@@ -58,6 +58,7 @@ workflow SmallRna {
 
     output {
         Array[File] countTables = flatten(sampleWorkflow.countTables)
+        Array[File] qcReports = flatten(sampleWorkflow.qcReports)
     }
 }
 

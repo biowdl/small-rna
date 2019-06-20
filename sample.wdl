@@ -39,13 +39,17 @@ workflow SampleWorkflow {
 
     Array[Readgroup] readgroups = sample.readgroups
 
+
     scatter (readgroup in readgroups) {
+
+        String readgroupName = "~{sample.id}-~{readgroup.lib_id}-~{readgroup.id}"
         String readgroupIdentifier = readgroup.lib_id + "-" + readgroup.id
+
         call QC.QC as QualityControl {
             input:
                 read1 = readgroup.R1,
                 read2 = readgroup.R2,
-                readgroupName = readgroup.id,
+                readgroupName = readgroupName,
                 outputDir = outputDir + "/" + readgroupIdentifier,
         }
 
@@ -55,7 +59,7 @@ workflow SampleWorkflow {
                 readsUpstream = [QualityControl.qcRead1],
                 readsDownstream = if defined(readgroup.R2) then select_all([QualityControl.qcRead2]) else readgroup.R2,  # FIXME: else None
                 indexFiles = bowtieIndexFiles,
-                samRG = "ID:~{sample.id}-~{readgroup.lib_id}-~{readgroup.id}\tLB:~{readgroup.lib_id}\tSM:~{sample.id}\tPL:~{platform}",
+                samRG = "ID:~{readgroupName}\tLB:~{readgroup.lib_id}\tSM:~{sample.id}\tPL:~{platform}",
                 outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam"
         }
     }
@@ -73,5 +77,6 @@ workflow SampleWorkflow {
 
     output {
         Array[File] countTables = HTSeqCount.counts
+        Array[File] qcReports = flatten(QualityControl.reports)
     }
 }
