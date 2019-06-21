@@ -1,0 +1,15 @@
+samples:
+  - id: SRR8704569
+    libraries:
+      - id: lib1
+        readgroups:
+          - id: rg1
+            reads:
+              R1: tests/data/SRR8704569.fq.gz
+  - id: SRR8704570
+    libraries:
+      - id: lib1
+        readgroups:
+          - id: rg1
+            reads:
+              R1: tests/data/SRR8704570.fq.gz
