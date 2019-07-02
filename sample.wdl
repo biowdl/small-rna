@@ -35,10 +35,10 @@ workflow SampleWorkflow {
         String? platform = "illumina"
         Array[File]+ gtfFiles
         String stranded = "no"
+        Map[String, String] dockerImages
     }
 
     Array[Readgroup] readgroups = sample.readgroups
-
 
     scatter (readgroup in readgroups) {
 
@@ -51,6 +51,7 @@ workflow SampleWorkflow {
                 read2 = readgroup.R2,
                 readgroupName = readgroupName,
                 outputDir = outputDir + "/" + readgroupIdentifier,
+                dockerImages = dockerImages
         }
 
 
@@ -60,7 +61,8 @@ workflow SampleWorkflow {
                 readsDownstream = if defined(readgroup.R2) then select_all([QualityControl.qcRead2]) else readgroup.R2,  # FIXME: else None
                 indexFiles = bowtieIndexFiles,
                 samRG = "ID:~{readgroupName}\tLB:~{readgroup.lib_id}\tSM:~{sample.id}\tPL:~{platform}",
-                outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam"
+                outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam",
+                dockerImage = dockerImages["bowtie"]
         }
     }
 
@@ -71,7 +73,8 @@ workflow SampleWorkflow {
                 inputBamsIndex = Bowtie.outputBamIndex,
                 gtfFile = gtfFile,
                 stranded = stranded,
-                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv"
+                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv",
+                dockerImage = dockerImages["htseq"]
         }
     }
 

@@ -1,0 +1,15 @@
+---
+# This file contains the docker images used in the pipeline.
+# The containers used by default are biocontainers uploaded on quay.io.
+# https://quay.io/organization/biocontainers
+
+# The string should be formatted in the same way as utilized in a 'docker pull'
+# command.
+
+# Tools are sorted alphabetically for ease of use.
+
+bowtie: "quay.io/biocontainers/mulled-v2-bfe71839265127576d3cd749c056e7b168308d56:1d8bec77b352cdcf3e9ff3d20af238b33ed96eae-0",
+cutadapt: "quay.io/biocontainers/cutadapt:2.3--py36h14c3975_0"
+fastqc: "quay.io/biocontainers/fastqc:0.11.7--4"
+htseq: "quay.io/biocontainers/htseq:0.9.1--py36h7eb728f_2",
+multiqc: "quay.io/biocontainers/multiqc:1.7--py_1"
