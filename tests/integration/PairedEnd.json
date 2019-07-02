@@ -13,5 +13,6 @@
     "tests/data/hsa.gff3"
   ],
   "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.QC.Cutadapt.adapter": ["AGATCGGAAGAG"],
-  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.QC.Cutadapt.adapterRead2": ["GATCGTCGGACT"]
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.QC.Cutadapt.adapterRead2": ["GATCGTCGGACT"],
+  "SmallRna.dockerImagesFile": "dockerImages.yml"
 }
