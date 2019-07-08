@@ -1,7 +1,5 @@
 version 1.0
 
-# MIT License
-#
 # Copyright (c) 2018 Leiden University Medical Center
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
