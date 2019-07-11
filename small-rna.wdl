@@ -26,6 +26,7 @@ import "structs.wdl" as structs
 import "sample.wdl" as SampleWorkflow
 import "tasks/multiqc.wdl" as multiqc
 import "tasks/htseq.wdl" as htseq
+import "tasks/common.wdl" as common
 
 workflow SmallRna {
     input {
@@ -36,7 +37,16 @@ workflow SmallRna {
         Array[File]+ gtfFiles
         String stranded = "no"
         Boolean runMultiQC = if (outputDir == ".") then false else true
+        File dockerImagesFile
     }
+
+    # Parse docker Tags configuration and sample sheet
+    call common.YamlToJson as ConvertDockerImagesFile {
+        input:
+            yaml = dockerImagesFile,
+            outputJson = outputDir + "/dockerImages.json"
+    }
+    Map[String, String] dockerImages = read_json(ConvertDockerImagesFile.json)
 
     call SampleConfigToSampleReadgroupLists as ConvertSampleConfig {
         input:
@@ -54,7 +64,8 @@ workflow SmallRna {
                 outputDir = outputDir + "/" + sample.id,
                 bowtieIndexFiles = bowtieIndexFiles,
                 platform = platform,
-                stranded = stranded
+                stranded = stranded,
+                dockerImages = dockerImages
         }
     }
 
@@ -75,7 +86,8 @@ workflow SmallRna {
                 # Multiqc will only run if these files are created.
                 finished = sampleWorkflow.finished,
                 outDir = outputDir,
-                analysisDirectory = outputDir
+                analysisDirectory = outputDir,
+                dockerImage = dockerImages["multiqc"]
         }
     }
 

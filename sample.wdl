@@ -34,10 +34,10 @@ workflow SampleWorkflow {
         Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
         String stranded = "no"
+        Map[String, String] dockerImages
     }
 
     Array[Readgroup] readgroups = sample.readgroups
-
 
     scatter (readgroup in readgroups) {
 
@@ -50,6 +50,7 @@ workflow SampleWorkflow {
                 read2 = readgroup.R2,
                 readgroupName = readgroupName,
                 outputDir = outputDir + "/" + readgroupIdentifier,
+                dockerImages = dockerImages
         }
 
 
@@ -59,14 +60,16 @@ workflow SampleWorkflow {
                 readsDownstream = if defined(readgroup.R2) then select_all([QualityControl.qcRead2]) else readgroup.R2,  # FIXME: else None
                 indexFiles = bowtieIndexFiles,
                 samRG = "ID:~{readgroupName}\tLB:~{readgroup.lib_id}\tSM:~{sample.id}\tPL:~{platform}",
-                outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam"
+                outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam",
+                dockerImage = dockerImages["bowtie"]
         }
     }
 
     call samtools.Merge as samtoolsMerge {
         input:
             bamFiles = Bowtie.outputBam,
-            outputBamPath = outputDir + "/" + sample.id + ".bam"
+            outputBamPath = outputDir + "/" + sample.id + ".bam",
+            dockerImage = dockerImages["samtools"]
     }
 
     output {
