@@ -25,7 +25,7 @@ version 1.0
 import "structs.wdl" as structs
 import "QC/QC.wdl" as QC
 import "tasks/bowtie.wdl" as bowtie
-import "tasks/htseq.wdl" as htseq
+import "tasks/samtools.wdl" as samtools
 
 workflow SampleWorkflow {
     input {
@@ -33,7 +33,6 @@ workflow SampleWorkflow {
         String outputDir = "."
         Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
-        Array[File]+ gtfFiles
         String stranded = "no"
     }
 
@@ -64,19 +63,15 @@ workflow SampleWorkflow {
         }
     }
 
-    scatter (gtfFile in gtfFiles) {
-        call htseq.HTSeqCount as HTSeqCount {
-            input:
-                inputBams = Bowtie.outputBam,
-                inputBamsIndex = Bowtie.outputBamIndex,
-                gtfFile = gtfFile,
-                stranded = stranded,
-                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv"
-        }
+    call samtools.Merge as samtoolsMerge {
+        input:
+            bamFiles = Bowtie.outputBam,
+            outputBamPath = outputDir + "/" + sample.id + ".bam"
     }
 
     output {
-        Array[File] countTables = HTSeqCount.counts
+        File bam = samtoolsMerge.outputBam
+        File bamIndex = samtoolsMerge.outputBamIndex
         Array[File] qcReports = flatten(QualityControl.reports)
         Boolean finished = true
     }

@@ -25,6 +25,7 @@ version 1.0
 import "structs.wdl" as structs
 import "sample.wdl" as SampleWorkflow
 import "tasks/multiqc.wdl" as multiqc
+import "tasks/htseq.wdl" as htseq
 
 workflow SmallRna {
     input {
@@ -53,8 +54,18 @@ workflow SmallRna {
                 outputDir = outputDir + "/" + sample.id,
                 bowtieIndexFiles = bowtieIndexFiles,
                 platform = platform,
-                gtfFiles = gtfFiles,
                 stranded = stranded
+        }
+    }
+
+     scatter (gtfFile in gtfFiles) {
+        call htseq.HTSeqCount as HTSeqCount {
+            input:
+                inputBams = sampleWorkflow.bam,
+                inputBamsIndex = sampleWorkflow.bamIndex,
+                gtfFile = gtfFile,
+                stranded = stranded,
+                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv"
         }
     }
 
@@ -69,6 +80,9 @@ workflow SmallRna {
     }
 
     output {
+        Array[File] countTables = HTSeqCount.counts
+        Array[File] bamFiles = sampleWorkflow.bam
+        Array[File] bamIndexes = sampleWorkflow.bamIndex
         Array[File] countTables = flatten(sampleWorkflow.countTables)
         Array[File] qcReports = flatten(sampleWorkflow.qcReports)
     }
