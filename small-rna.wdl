@@ -95,7 +95,6 @@ workflow SmallRna {
         Array[File] countTables = HTSeqCount.counts
         Array[File] bamFiles = sampleWorkflow.bam
         Array[File] bamIndexes = sampleWorkflow.bamIndex
-        Array[File] countTables = flatten(sampleWorkflow.countTables)
         Array[File] qcReports = flatten(sampleWorkflow.qcReports)
     }
 }
