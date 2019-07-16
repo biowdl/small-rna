@@ -85,6 +85,7 @@ workflow SmallRna {
             input:
                 # Multiqc will only run if these files are created.
                 finished = sampleWorkflow.finished,
+                dependencies = HTSeqCount.counts,
                 outDir = outputDir,
                 analysisDirectory = outputDir,
                 dockerImage = dockerImages["multiqc"]
