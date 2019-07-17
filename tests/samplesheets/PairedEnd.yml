@@ -7,3 +7,7 @@ samples:
             reads:
               R1: tests/data/SRR5087327_R1.fq.gz
               R2: tests/data/SRR5087327_R2.fq.gz
+          - id: rg2
+            reads:
+              R1: tests/data/SRR5087327_R1.fq.gz
+              R2: tests/data/SRR5087327_R2.fq.gz

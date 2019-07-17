@@ -1,7 +1,5 @@
 version 1.0
 
-# MIT License
-#
 # Copyright (c) 2018 Leiden University Medical Center
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -113,7 +111,6 @@ task SampleConfigToSampleReadgroupLists {
                     new_sample['readgroups'].append(new_readgroup)
             sample_rg_lists.append(new_sample)
         sample_mod_config = {"samples": sample_rg_lists}
-        print(sample_mod_config)
         with open("~{outputJson}", "w") as output_json:
             json.dump(sample_mod_config, output_json)
         CODE
