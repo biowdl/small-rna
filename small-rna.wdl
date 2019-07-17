@@ -1,7 +1,5 @@
 version 1.0
 
-# MIT License
-#
 # Copyright (c) 2018 Leiden University Medical Center
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +23,6 @@ version 1.0
 import "structs.wdl" as structs
 import "sample.wdl" as SampleWorkflow
 import "tasks/multiqc.wdl" as multiqc
-import "tasks/htseq.wdl" as htseq
 import "tasks/common.wdl" as common
 
 workflow SmallRna {
@@ -64,19 +61,9 @@ workflow SmallRna {
                 outputDir = outputDir + "/" + sample.id,
                 bowtieIndexFiles = bowtieIndexFiles,
                 platform = platform,
+                gtfFiles = gtfFiles,
                 stranded = stranded,
                 dockerImages = dockerImages
-        }
-    }
-
-     scatter (gtfFile in gtfFiles) {
-        call htseq.HTSeqCount as HTSeqCount {
-            input:
-                inputBams = sampleWorkflow.bam,
-                inputBamsIndex = sampleWorkflow.bamIndex,
-                gtfFile = gtfFile,
-                stranded = stranded,
-                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv"
         }
     }
 
@@ -85,7 +72,6 @@ workflow SmallRna {
             input:
                 # Multiqc will only run if these files are created.
                 finished = sampleWorkflow.finished,
-                dependencies = HTSeqCount.counts,
                 outDir = outputDir,
                 analysisDirectory = outputDir,
                 dockerImage = dockerImages["multiqc"]
@@ -93,7 +79,7 @@ workflow SmallRna {
     }
 
     output {
-        Array[File] countTables = HTSeqCount.counts
+        Array[File] countTables = flatten(sampleWorkflow.countTables)
         Array[File] bamFiles = sampleWorkflow.bam
         Array[File] bamIndexes = sampleWorkflow.bamIndex
         Array[File] qcReports = flatten(sampleWorkflow.qcReports)

@@ -1,7 +1,5 @@
 version 1.0
 
-# MIT License
-#
 # Copyright (c) 2018 Leiden University Medical Center
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,6 +24,7 @@ import "structs.wdl" as structs
 import "QC/QC.wdl" as QC
 import "tasks/bowtie.wdl" as bowtie
 import "tasks/samtools.wdl" as samtools
+import "tasks/htseq.wdl" as htseq
 
 workflow SampleWorkflow {
     input {
@@ -33,7 +32,8 @@ workflow SampleWorkflow {
         String outputDir = "."
         Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
-        String stranded = "no"
+        Array[File]+ gtfFiles
+        String stranded
         Map[String, String] dockerImages
     }
 
@@ -72,7 +72,21 @@ workflow SampleWorkflow {
             dockerImage = dockerImages["samtools"]
     }
 
+
+    scatter (gtfFile in gtfFiles) {
+        call htseq.HTSeqCount as HTSeqCount {
+            input:
+                inputBams = [samtoolsMerge.outputBam],
+                inputBamsIndex = [samtoolsMerge.outputBamIndex],
+                gtfFile = gtfFile,
+                stranded = stranded,
+                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv",
+                dockerImage = dockerImages["htseq"]
+        }
+    }
+
     output {
+        Array[File] countTables = HTSeqCount.counts
         File bam = samtoolsMerge.outputBam
         File bamIndex = samtoolsMerge.outputBamIndex
         Array[File] qcReports = flatten(QualityControl.reports)
