@@ -80,7 +80,7 @@ workflow SampleWorkflow {
                 inputBamsIndex = [samtoolsMerge.outputBamIndex],
                 gtfFile = gtfFile,
                 stranded = stranded,
-                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv",
+                outputTable = outputDir + "/" + sample.id + "-" + basename(gtfFile) + ".tsv",
                 dockerImage = dockerImages["htseq"]
         }
     }

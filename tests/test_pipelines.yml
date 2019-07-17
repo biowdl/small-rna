@@ -4,11 +4,11 @@
     - no_docker_conf
   command: cromwell run -i tests/integration/SingleEnd.json -o tests/cromwell_options.json small-rna.wdl
   files:
-    - path: "test-output/SRR8704569/ensembl.gtf.tsv"
-    - path: "test-output/SRR8704569/hsa.gff3.tsv"
+    - path: "test-output/SRR8704569/SRR8704569-ensembl.gtf.tsv"
+    - path: "test-output/SRR8704569/SRR8704569-hsa.gff3.tsv"
     - path: "test-output/SRR8704569/lib1-rg1/SRR8704569_fastqc.html"
-    - path: "test-output/SRR8704570/ensembl.gtf.tsv"
-    - path: "test-output/SRR8704570/hsa.gff3.tsv"
+    - path: "test-output/SRR8704570/SRR8704570-ensembl.gtf.tsv"
+    - path: "test-output/SRR8704570/SRR8704570-hsa.gff3.tsv"
     - path: "test-output/SRR8704570/lib1-rg1/SRR8704570_fastqc.html"
     - path: "test-output/merged_counts.tsv"
 
@@ -19,8 +19,8 @@
     - no_docker_conf
   command: cromwell run -i tests/integration/PairedEnd.json -o tests/cromwell_options.json small-rna.wdl
   files:
-    - path: "test-output/SRR5087327/ensembl.gtf.tsv"
-    - path: "test-output/SRR5087327/hsa.gff3.tsv"
+    - path: "test-output/SRR5087327/SRR5087327-ensembl.gtf.tsv"
+    - path: "test-output/SRR5087327/SRR5087327-hsa.gff3.tsv"
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R1_fastqc.html"
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R2_fastqc.html"
     - path: "test-output/merged_counts.tsv"
@@ -35,8 +35,8 @@
     sed -i "2i\"SmallRna.outputDir\":\"$PWD/test-output\"," $TEST_JSON ;
     cromwell run -i $TEST_JSON small-rna.wdl'
   files:
-    - path: "test-output/SRR5087327/ensembl.gtf.tsv"
-    - path: "test-output/SRR5087327/hsa.gff3.tsv"
+    - path: "test-output/SRR5087327/SRR5087327-ensembl.gtf.tsv"
+    - path: "test-output/SRR5087327/SRR5087327-hsa.gff3.tsv"
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R1_fastqc.html"
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R2_fastqc.html"
     - path: "test-output/SRR5087327/lib1-rg1/lib1-rg1.bam"
