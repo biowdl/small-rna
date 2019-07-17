@@ -32,7 +32,7 @@ workflow SampleWorkflow {
         String outputDir = "."
         Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
-        Array[File]+ gtfFiles
+        Array[GTF]+ gtfFiles
         String stranded
         Map[String, String] dockerImages
     }
@@ -78,9 +78,10 @@ workflow SampleWorkflow {
             input:
                 inputBams = [samtoolsMerge.outputBam],
                 inputBamsIndex = [samtoolsMerge.outputBamIndex],
-                gtfFile = gtfFile,
+                gtfFile = gtfFile.path,
+                featureType = select_first([gtfFile.featureType, "exon"]),
                 stranded = stranded,
-                outputTable = outputDir + "/" + sample.id + "-" + basename(gtfFile) + ".tsv",
+                outputTable = outputDir + "/" + sample.id + "-" + basename(gtfFile.path) + ".tsv",
                 dockerImage = dockerImages["htseq"]
         }
     }

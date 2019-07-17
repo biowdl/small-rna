@@ -16,3 +16,7 @@ struct SampleConfig {
     Array[Sample] samples
 }
 
+struct GTF {
+    File path
+    String? featureType
+}

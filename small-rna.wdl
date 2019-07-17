@@ -32,7 +32,7 @@ workflow SmallRna {
         String outputDir = "."
         Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
-        Array[File]+ gtfFiles
+        Array[GTF]+ gtfFiles
         String stranded = "no"
         Boolean runMultiQC = if (outputDir == ".") then false else true
         File dockerImagesFile
