@@ -10,6 +10,8 @@
     - path: "test-output/SRR8704570/ensembl.gtf.tsv"
     - path: "test-output/SRR8704570/hsa.gff3.tsv"
     - path: "test-output/SRR8704570/lib1-rg1/SRR8704570_fastqc.html"
+    - path: "test-output/merged_counts.tsv"
+
 
 - name: PairedEnd
   tags:
@@ -21,6 +23,7 @@
     - path: "test-output/SRR5087327/hsa.gff3.tsv"
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R1_fastqc.html"
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R2_fastqc.html"
+    - path: "test-output/merged_counts.tsv"
 
 - name: PairedEndAbsoluteFolder
   tags:
@@ -38,3 +41,4 @@
     - path: "test-output/SRR5087327/lib1-rg1/SRR5087327_R2_fastqc.html"
     - path: "test-output/SRR5087327/lib1-rg1/lib1-rg1.bam"
     - path: "test-output/multiqc_report.html"
+    - path: "test-output/merged_counts.tsv"

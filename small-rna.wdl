@@ -24,6 +24,7 @@ import "structs.wdl" as structs
 import "sample.wdl" as SampleWorkflow
 import "tasks/multiqc.wdl" as multiqc
 import "tasks/common.wdl" as common
+import "tasks/collect-columns.wdl" as collect_columns
 
 workflow SmallRna {
     input {
@@ -67,6 +68,14 @@ workflow SmallRna {
         }
     }
 
+    call collect_columns.CollectColumns as CollectColumns {
+        input:
+            inputTables = flatten(sampleWorkflow.countTables),
+            outputPath = outputDir + "/merged_counts.tsv",
+            featureColumn = 0,
+            valueColumn = 1
+    }
+
     if (runMultiQC) {
         call multiqc.MultiQC as multiqcTask {
             input:
@@ -79,6 +88,7 @@ workflow SmallRna {
     }
 
     output {
+        File countTable = CollectColumns.outputTable
         Array[File] countTables = flatten(sampleWorkflow.countTables)
         Array[File] bamFiles = sampleWorkflow.bam
         Array[File] bamIndexes = sampleWorkflow.bamIndex
