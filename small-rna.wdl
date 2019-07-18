@@ -68,12 +68,21 @@ workflow SmallRna {
         }
     }
 
-    call collect_columns.CollectColumns as CollectColumns {
-        input:
-            inputTables = flatten(sampleWorkflow.countTables),
-            outputPath = outputDir + "/merged_counts.tsv",
-            featureColumn = 0,
-            valueColumn = 1
+    # Transpose turns a list of count tables per sample in a list of samples per count table.
+    # This is necessary since we want to merge counttables on a per gtf bases.
+    # Not on a per sample basis.
+    Array[Array[File]] countTablesTransposed = transpose(sampleWorkflow.countTables)
+
+    scatter (index in range(length(gtfFiles))) {
+        String gtfName = "merged_counts_" + basename(gtfFiles[index].path)
+
+        call collect_columns.CollectColumns as CollectColumns {
+            input:
+                inputTables = countTablesTransposed[index],
+                outputPath = outputDir + "/~{gtfName}.tsv",
+                featureColumn = 0,
+                valueColumn = 1
+        }
     }
 
     if (runMultiQC) {
@@ -88,7 +97,7 @@ workflow SmallRna {
     }
 
     output {
-        File countTable = CollectColumns.outputTable
+        Array[File] mergedCountTable = CollectColumns.outputTable
         Array[File] countTables = flatten(sampleWorkflow.countTables)
         Array[File] bamFiles = sampleWorkflow.bam
         Array[File] bamIndexes = sampleWorkflow.bamIndex
