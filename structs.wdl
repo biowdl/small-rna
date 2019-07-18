@@ -19,4 +19,5 @@ struct SampleConfig {
 struct GTF {
     File path
     String? featureType
+    String? idattr
 }

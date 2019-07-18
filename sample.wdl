@@ -79,7 +79,8 @@ workflow SampleWorkflow {
                 inputBams = [samtoolsMerge.outputBam],
                 inputBamsIndex = [samtoolsMerge.outputBamIndex],
                 gtfFile = gtfFile.path,
-                featureType = select_first([gtfFile.featureType, "exon"]),
+                featureType = gtfFile.featureType,
+                idattr = gtfFile.idattr,
                 stranded = stranded,
                 outputTable = outputDir + "/" + sample.id + "-" + basename(gtfFile.path) + ".tsv",
                 dockerImage = dockerImages["htseq"]

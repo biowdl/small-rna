@@ -9,7 +9,8 @@
     "tests/data/reference/bowtie/reference.rev.2.ebwt"
   ],
   "SmallRna.gtfFiles": [
-    {"path": "tests/data/ensembl.gtf"},
+    {"path": "tests/data/ensembl.gtf",
+      "idattr": "gene_id"},
     {"path": "tests/data/hsa.gff3",
       "featureType": "miRNA"}
   ],
