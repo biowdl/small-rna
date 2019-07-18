@@ -66,6 +66,8 @@ workflow SmallRna {
                 stranded = stranded,
                 dockerImages = dockerImages
         }
+        # Create a list of sampleIds
+        String sampleIds = sample.id
     }
 
     # Transpose turns a list of count tables per sample in a list of samples per count table.
@@ -80,6 +82,7 @@ workflow SmallRna {
             input:
                 inputTables = countTablesTransposed[index],
                 outputPath = outputDir + "/~{gtfName}.tsv",
+                sampleNames = sampleIds,
                 featureColumn = 0,
                 valueColumn = 1
         }
@@ -90,6 +93,7 @@ workflow SmallRna {
             input:
                 # Multiqc will only run if these files are created.
                 finished = sampleWorkflow.finished,
+                dependencies = CollectColumns.outputTable,
                 outDir = outputDir,
                 analysisDirectory = outputDir,
                 dockerImage = dockerImages["multiqc"]
