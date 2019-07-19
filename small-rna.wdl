@@ -96,7 +96,8 @@ workflow SmallRna {
                 dependencies = CollectColumns.outputTable,
                 outDir = outputDir,
                 analysisDirectory = outputDir,
-                dockerImage = dockerImages["multiqc"]
+                dockerImage = dockerImages["multiqc"],
+                fullNames = true  # Otherwise multiqc thinks there is a 'Merged' sample
         }
     }
 
