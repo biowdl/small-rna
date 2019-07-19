@@ -9,8 +9,10 @@
     "tests/data/reference/bowtie/reference.rev.2.ebwt"
   ],
   "SmallRna.gtfFiles": [
-    "tests/data/ensembl.gtf",
-    "tests/data/hsa.gff3"
+    {"path": "tests/data/ensembl.gtf",
+      "idattr": "gene_id"},
+    {"path": "tests/data/hsa.gff3",
+      "featureType": "miRNA"}
   ],
   "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.QC.Cutadapt.adapter": ["TGGAATTCTCGG"],
   "SmallRna.dockerImagesFile": "dockerImages.yml"

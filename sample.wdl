@@ -23,6 +23,7 @@ version 1.0
 import "structs.wdl" as structs
 import "QC/QC.wdl" as QC
 import "tasks/bowtie.wdl" as bowtie
+import "tasks/samtools.wdl" as samtools
 import "tasks/htseq.wdl" as htseq
 
 workflow SampleWorkflow {
@@ -31,8 +32,8 @@ workflow SampleWorkflow {
         String outputDir = "."
         Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
-        Array[File]+ gtfFiles
-        String stranded = "no"
+        Array[GTF]+ gtfFiles
+        String stranded
         Map[String, String] dockerImages
     }
 
@@ -64,20 +65,32 @@ workflow SampleWorkflow {
         }
     }
 
+    call samtools.Merge as samtoolsMerge {
+        input:
+            bamFiles = Bowtie.outputBam,
+            outputBamPath = outputDir + "/" + sample.id + ".bam",
+            dockerImage = dockerImages["samtools"]
+    }
+
+
     scatter (gtfFile in gtfFiles) {
         call htseq.HTSeqCount as HTSeqCount {
             input:
-                inputBams = Bowtie.outputBam,
-                inputBamsIndex = Bowtie.outputBamIndex,
-                gtfFile = gtfFile,
+                inputBams = [samtoolsMerge.outputBam],
+                inputBamsIndex = [samtoolsMerge.outputBamIndex],
+                gtfFile = gtfFile.path,
+                featureType = gtfFile.featureType,
+                idattr = gtfFile.idattr,
                 stranded = stranded,
-                outputTable = outputDir + "/" + basename(gtfFile) + ".tsv",
+                outputTable = outputDir + "/" + sample.id + "-" + basename(gtfFile.path) + ".tsv",
                 dockerImage = dockerImages["htseq"]
         }
     }
 
     output {
         Array[File] countTables = HTSeqCount.counts
+        File bam = samtoolsMerge.outputBam
+        File bamIndex = samtoolsMerge.outputBamIndex
         Array[File] qcReports = flatten(QualityControl.reports)
         Boolean finished = true
     }

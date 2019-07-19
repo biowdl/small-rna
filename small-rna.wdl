@@ -24,6 +24,7 @@ import "structs.wdl" as structs
 import "sample.wdl" as SampleWorkflow
 import "tasks/multiqc.wdl" as multiqc
 import "tasks/common.wdl" as common
+import "tasks/collect-columns.wdl" as collect_columns
 
 workflow SmallRna {
     input {
@@ -31,7 +32,7 @@ workflow SmallRna {
         String outputDir = "."
         Array[File]+ bowtieIndexFiles
         String? platform = "illumina"
-        Array[File]+ gtfFiles
+        Array[GTF]+ gtfFiles
         String stranded = "no"
         Boolean runMultiQC = if (outputDir == ".") then false else true
         File dockerImagesFile
@@ -65,6 +66,26 @@ workflow SmallRna {
                 stranded = stranded,
                 dockerImages = dockerImages
         }
+        # Create a list of sampleIds
+        String sampleIds = sample.id
+    }
+
+    # Transpose turns a list of count tables per sample in a list of samples per count table.
+    # This is necessary since we want to merge counttables on a per gtf bases.
+    # Not on a per sample basis.
+    Array[Array[File]] countTablesTransposed = transpose(sampleWorkflow.countTables)
+
+    scatter (index in range(length(gtfFiles))) {
+        String gtfName = "merged_counts_" + basename(gtfFiles[index].path)
+
+        call collect_columns.CollectColumns as CollectColumns {
+            input:
+                inputTables = countTablesTransposed[index],
+                outputPath = outputDir + "/~{gtfName}.tsv",
+                sampleNames = sampleIds,
+                featureColumn = 0,
+                valueColumn = 1
+        }
     }
 
     if (runMultiQC) {
@@ -72,14 +93,19 @@ workflow SmallRna {
             input:
                 # Multiqc will only run if these files are created.
                 finished = sampleWorkflow.finished,
+                dependencies = CollectColumns.outputTable,
                 outDir = outputDir,
                 analysisDirectory = outputDir,
-                dockerImage = dockerImages["multiqc"]
+                dockerImage = dockerImages["multiqc"],
+                fullNames = true  # Otherwise multiqc thinks there is a 'Merged' sample
         }
     }
 
     output {
+        Array[File] mergedCountTable = CollectColumns.outputTable
         Array[File] countTables = flatten(sampleWorkflow.countTables)
+        Array[File] bamFiles = sampleWorkflow.bam
+        Array[File] bamIndexes = sampleWorkflow.bamIndex
         Array[File] qcReports = flatten(sampleWorkflow.qcReports)
     }
 }
