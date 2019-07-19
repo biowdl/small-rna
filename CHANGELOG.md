@@ -9,6 +9,8 @@ This document is user facing. Please word the changes in such a way
 that users understand how the changes affect the new version.
 -->
 
-version 1.0.0-dev
+version 0.1.0-dev
 ---------------------------
-+ <a change>
++ Allow more than one gtf/gff file for annotation. Set up inputs so each
+  htseqcount run can be configured from the inputs.
++ Created a miRNA pipeline
