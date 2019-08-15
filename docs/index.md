@@ -41,17 +41,11 @@ about pipeline inputs.
 
 ```JSON
 {
- "pipeline.sampleConfigFile":"The sample configuration file. See below for more details.",
-  "pipeline.starIndexDir": "The STAR index.",
-  "pipeline.reference": {
-    "fasta": "A path to a reference fasta",
-    "fai": "The path to the index associated with the reference fasta",
-    "dict": "The path to the dict file associated with the reference fasta"
-  },
-  "pipeline.outputDir": "The path to the output directory",
-  "pipeline.refflatFile": "Reference annotation Refflat file. This will be used for expression quantification.",
-  "pipeline.referenceGtfFile": "Reference annotation GTF file. This will be used for expression quantification.",
-  "pipeline.strandedness": "Indicates the strandedness of the input data. This should be one of the following: FR (Forward, Reverse), RF (Reverse, Forward) or None: (Unstranded)"
+  "SmallRna.bowtieIndexFiles": "A list of all files that belong to the bowtie index",
+  "SmallRna.gtfFiles": "A list of structs containing the GTF Files and information about ID and feature attributes",
+  "SmallRna.dockerImagesFile": "A file containing all the docker images used in the workflow. A default is provided as 'dockerImages.yml'.",
+  "SmallRna.sampleConfigFile": "The sample configuration file. See below for more details.",
+  "SmallRna.stranded": "The input for the stranded parameter of HtSeqCount. Default: 'no'"
 }
 ```
 
