@@ -70,29 +70,6 @@ omitted and R2 values may be omitted in the case of single-end data.
 Multiple readgroups can be added per library and multiple libraries may be
 given per sample.
 
-#### Variantcalling
-In order to perform variant calling the following inputs are also required:
-```JSON
-{
-  "pipeline.variantCalling": "Whether or not variantcalling should be performed, defaults to False",
-  "pipeline.dbSNP": {
-    "file": "A path to a dbSNP VCF file",
-    "index": "The path to the index (.tbi) file associated with the dbSNP VCF"
-  }
-}
-```
-
-#### lncRNA detection
-In order to perform lncRNA detection the following inputs are also required:
-```JSON
-{
-  "pipeline.lncRNAdetection": "Whether or not lncRNA detection should be performed, defaults to False",
-  "pipeline.lncRNAdatabases": "A list of gtf files containing known lncRNAs",
-  "pipeline.cpatLogitModel": "The CPAT logitModel to be used",
-  "pipeline.cpatHex": "The CPAT hexamer tab file to be used"
-}
-```
-
 #### Example
 
 The following is an example of what an inputs JSON might look like:
