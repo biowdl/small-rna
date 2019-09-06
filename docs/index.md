@@ -75,26 +75,24 @@ given per sample.
 The following is an example of what an inputs JSON might look like:
 ```JSON
 {
- "pipeline.sampleConfigFile":"/home/user/analysis/samples.yml",
-  "pipeline.starIndexDir": "/home/user/genomes/human/bwa/GRCh38/star",
-  "pipeline.variantCalling": true,
-  "pipeline.lncRNAdetection": true,
-  "pipeline.reference": {
-    "fasta": "/home/user/genomes/human/GRCh38.fasta",
-    "fai": "/home/user/genomes/human/GRCh38.fasta.fai",
-    "dict": "/home/user/genomes/human/GRCh38.dict"
-  },
-  "pipeline.dbSNP": {
-    "file": "/home/user/genomes/human/dbsnp/dbsnp-151.vcf.gz",
-    "index": "/home/user/genomes/human/dbsnp/dbsnp-151.vcf.gz.tbi"
-  },
-  "pipeline.lncRNAdatabases": ["/home/user/genomes/human/NONCODE.gtf"],
-  "pipeline.cpatLogitModel": "/home/user/genomes/human/GRCH38_logit",
-  "pipeline.cpatHex": "/home/user/genomes/human/GRCH38_hex.tab",
-  "pipeline.outputDir": "/home/user/analysis/results",
-  "pipeline.refflatFile": "/home/user/genomes/human/GRCH38_annotation.refflat",
-  "pipeline.gtfFile": "/home/user/genomes/human/GRCH38_annotation.gtf",
-  "pipeline.strandedness": "RF"
+  "SmallRna.sampleConfigFile": "/samplesheets/PairedEnd.yml",
+  "SmallRna.bowtieIndexFiles": [
+    "/data/reference/bowtie/reference.1.ebwt",
+    "/data/reference/bowtie/reference.2.ebwt",
+    "/data/reference/bowtie/reference.3.ebwt",
+    "/data/reference/bowtie/reference.4.ebwt",
+    "/data/reference/bowtie/reference.rev.1.ebwt",
+    "/data/reference/bowtie/reference.rev.2.ebwt"
+  ],
+  "SmallRna.gtfFiles": [
+    {"path": "/data/ensembl.gtf",
+      "idattr": "gene_id"},
+    {"path": "/data/hsa.gff3",
+      "featureType": "miRNA"}
+  ],
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.adapterForward": "AGATCGGAAGAG",
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.adapterReverse": "GATCGTCGGACT",
+  "SmallRna.dockerImagesFile": "dockerImages.yml"
 }
 ```
 
@@ -131,35 +129,9 @@ samples:
 
 
 ### Output
-This pipeline will produce a number of directories and files:
-- **expression_measures**: Contains a number of directories with expression
-measures.
-  - **stringtie**: Contains the stringtie output. Includes two additional
-  folder:
-    - **FPKM**: Contains per sample FPKM counts, extracted from the stringtie
-    abundance output. Also contains a file called `all_samples.FPKM`, which
-    contains the FPKM values for all samples.
-    - **TPM**: Contains per sample TPM counts, extracted from the stringtie
-    abundance output. Also contains a file called `all_samples.TPM`, which
-    contains the TPM values for all samples.
-  - **fragments_per_gene**: Contains the HTSeq-Count output. Also contains a
-  file called `all_samples.fragments_per_gene`, which contains the counts for
-  all samples.
-- **samples**: Contains a folder per sample.
-  - **&lt;sample>**: Contains a variety of files, including the BAM and gVCF
-  (if variantcalling is enabled) files for this sample, as well as their indexes.
-  It also contains a directory per library.
-    - **&lt;library>**: Contains the BAM files for this library
-    (`*.markdup.bam`) and a BAM file with additional preprocessing performed
-    used for variantcalling (`*.markdup.bsqr.bam`). This second BAM file should
-    not be used for expression quantification, because splicing events have
-    been split into separate reads to improve variantcalling.  
-    This directory also contains a directory per readgroup.
-      - **&lt;readgroup>**: Contains QC metrics and preprocessed FastQ files,
-      in case preprocessing was necessary.
-- **multisample.vcf.gz**: If variantcalling is enabled, a multisample VCF file 
-  with the variantcalling results.
-- **multiqc**: Contains the multiqc report.
+This workflow will output the trimmed fastq files, bam files  and
+count files in a separate folder per sample. 
+It will also output a merged counts file in the output directory.
 
 ## Contact
 <p>
