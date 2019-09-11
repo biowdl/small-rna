@@ -75,7 +75,6 @@ workflow SampleWorkflow {
     call samtools.SortByName as samtoolsSort {
         input:
             bamFile = samtoolsMerge.outputBam,
-            outputBamPath = outputDir + "/" + sample.id + "sorted.bam",
             dockerImage = dockerImages["samtools"]
     }
 
