@@ -14,6 +14,6 @@
     {"path": "tests/data/hsa.gff3",
       "featureType": "miRNA"}
   ],
-  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.QC.Cutadapt.adapter": ["TGGAATTCTCGG"],
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.adapterForward": ["TGGAATTCTCGG"],
   "SmallRna.dockerImagesFile": "dockerImages.yml"
 }
