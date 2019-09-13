@@ -72,13 +72,18 @@ workflow SampleWorkflow {
             dockerImage = dockerImages["samtools"]
     }
 
+    call samtools.SortByName as samtoolsSort {
+        input:
+            bamFile = samtoolsMerge.outputBam,
+            dockerImage = dockerImages["samtools"]
+    }
 
     scatter (gtfFile in gtfFiles) {
         call htseq.HTSeqCount as HTSeqCount {
             input:
-                inputBams = [samtoolsMerge.outputBam],
-                inputBamsIndex = [samtoolsMerge.outputBamIndex],
+                inputBams = [samtoolsSort.outputBam],
                 gtfFile = gtfFile.path,
+                order = "name",
                 featureType = gtfFile.featureType,
                 idattr = gtfFile.idattr,
                 stranded = stranded,
