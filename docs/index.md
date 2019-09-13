@@ -3,7 +3,8 @@ layout: default
 title: Home
 ---
 
-This pipeline can be used to process RNA-seq data, starting from FastQ files.
+This pipeline can be used to process small RNA data (~20-60bp short reads)
+ starting from FastQ files.
 It will perform adapter clipping (using cutadapt), mapping (using bowtie) and expression
 quantification (using HTSeq-Count).
 
