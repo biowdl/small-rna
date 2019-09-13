@@ -138,7 +138,7 @@ It will also output a merged counts file in the output directory.
   <!-- Obscure e-mail address for spammers -->
 For any question about running this pipeline and feature requests, please use
 the
-<a href='https://github.com/biowdl/rna-seq/issues'>github issue tracker</a>
+<a href='https://github.com/biowdl/small-rna/issues'>github issue tracker</a>
 or contact
 the SASC team
  directly at: 
