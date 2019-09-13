@@ -15,3 +15,4 @@ version 0.1.0-dev
 + Allow more than one gtf/gff file for annotation. Set up inputs so each
   htseqcount run can be configured from the inputs.
 + Created a miRNA pipeline
++ Use name sorted bam for HTseq-count step
