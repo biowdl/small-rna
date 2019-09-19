@@ -5,7 +5,7 @@ title: Home
 
 This pipeline can be used to process small RNAs (with a transcipt length of 20-60bp)
  starting from FastQ files.
-It will perform quality control (using FastQC), adapter clipping (using cutadapt), mapping (using bowtie) and expression
+It will perform quality control (using FastQC and MultiQC), adapter clipping (using cutadapt), mapping (using bowtie) and expression
 quantification (using HTSeq-Count).
 
 This pipeline is part of [BioWDL](https://biowdl.github.io/)
