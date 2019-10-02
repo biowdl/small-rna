@@ -50,6 +50,8 @@ Womtool as described in the
 ```
 
 #### Sample configuration
+
+##### CSV Format
 The sample configuration can be given as a csv file with the following 
 columns: sample, library, readgroup, R1, R1_md5, R2, R2_md5.
 
@@ -61,7 +63,7 @@ readgroup | readgroup ID. Usually a library is sequenced on multiple lanes in th
 R1| The fastq file containing the forward reads 
 R1_md5 | Optional: md5sum for the R1 file.
 R2| Optional: The fastq file containing the reverse reads
-R2_md5: Optional md5sum for the R2 file
+R2_md5| Optional: md5sum for the R2 file
 
 The easiest way to create a samplesheet is to use a spreadsheet program
 such as LibreOffice Calc or Microsoft Excel, and create a table:
@@ -72,8 +74,11 @@ sample1|lib1|rg1|data/s1-l1-rg1-r1.fastq|||
 sample2|lib1|rg1|data/s1-l1-rg1-r2.fastq|||
 
 NOTE: R1_md5, R2 and R2_md5 are optional do not have to be filled.
-You can then save it in .csv format.
+
+After creating the table in a spreadsheet program it can be saved in 
+csv format.
  
+##### YAML format
 The sample configuration can also be a YML file which adheres to the following
 structure:
 ```YML
