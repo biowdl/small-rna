@@ -1,5 +1,5 @@
 {
-  "SmallRna.sampleConfigFile": "tests/samplesheets/SingleEnd.yml",
+  "SmallRna.sampleConfigFile": "tests/samplesheets/SingleEnd.csv",
   "SmallRna.bowtieIndexFiles": [
     "tests/data/reference/bowtie/reference.1.ebwt",
     "tests/data/reference/bowtie/reference.2.ebwt",
