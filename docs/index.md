@@ -73,7 +73,7 @@ sample | library | read | R1 | R1_md5 | R2 | R2_md5
 sample1|lib1|rg1|data/s1-l1-rg1-r1.fastq|||
 sample2|lib1|rg1|data/s1-l1-rg1-r2.fastq|||
 
-NOTE: R1_md5, R2 and R2_md5 are optional do not have to be filled.
+NOTE: R1_md5, R2 and R2_md5 are optional do not have to be filled. And additional fields may be added (eg. for documentation purposes), these will be ignored by the pipeline.
 
 After creating the table in a spreadsheet program it can be saved in 
 csv format.
