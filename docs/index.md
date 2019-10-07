@@ -59,7 +59,7 @@ column name | function
 ---|---
 sample | sample ID
 library | library ID. These are the DNA libraries that are sequenced. Usually there is only one library per sample
-readgroup | readgroup ID. Usually a library is sequenced on multiple lanes in the sequencer, which gives multiple fastq files. Each readgroup pair should have an ID.
+readgroup | readgroup ID. Usually a library is sequenced on multiple lanes in the sequencer, which gives multiple fastq files (referred to as readgroups). Each readgroup pair should have an ID.
 R1| The fastq file containing the forward reads 
 R1_md5 | Optional: md5sum for the R1 file.
 R2| Optional: The fastq file containing the reverse reads
