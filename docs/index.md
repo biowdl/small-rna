@@ -51,6 +51,19 @@ Womtool as described in the
 
 #### Sample configuration
 
+##### Verification
+
+All samplesheet formats can be verified using `biowdl-input-converter`. 
+It can be installed with `pip install biowdl-input-converter` or 
+`conda install biowdl-input-converter` (from the bioconda channel). 
+Python 3.7 or higher is required.
+
+With `biowdl-input-converter --validate samplesheet.csv` The file
+"samplesheet.csv" will be checked. Also the presence of all files in
+the samplesheet will be checked to ensure no typos were made. For more
+information check out the [biowdl-input-converter readthedocs page](
+https://biowdl-input-converter.readthedocs.io).
+
 ##### CSV Format
 The sample configuration can be given as a csv file with the following 
 columns: sample, library, readgroup, R1, R1_md5, R2, R2_md5.
@@ -60,9 +73,9 @@ column name | function
 sample | sample ID
 library | library ID. These are the libraries that are sequenced. Usually there is only one library per sample
 readgroup | readgroup ID. Usually a library is sequenced on multiple lanes in the sequencer, which gives multiple fastq files (referred to as readgroups). Each readgroup pair should have an ID.
-R1| The fastq file containing the forward reads 
+R1| The fastq file containing the first reads of the read pair 
 R1_md5 | Optional: md5sum for the R1 file.
-R2| Optional: The fastq file containing the reverse reads
+R2| Optional: The fastq file containing the second reads of the read pair
 R2_md5| Optional: md5sum for the R2 file
 
 The easiest way to create a samplesheet is to use a spreadsheet program
