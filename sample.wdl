@@ -101,4 +101,15 @@ workflow SampleWorkflow {
         Array[File] qcReports = flatten(QualityControl.reports)
         Boolean finished = true
     }
+
+    parameter_meta {
+        sample: {description: "The sample data", category: "required"}
+        outputDir: {description: "The directory where the output should be written.", category: "common"}
+        bowtieIndexFiles: {description: "The bowtie index files.", category: "required"}
+        platform: {description: "The platform used for sequencing.", category: "advanced"}
+        gtfFiles: {description: "The reference GTF files.", category: "required"}
+        stranded: {description: "Whether or not the data is stranded: yes, no or reverse.", category: "required"}
+        dockerImages: {description: "The docker image used for this task. Changing this may result in errors which the developers may choose not to address.",
+                       category: "advanced"}
+    }
 }

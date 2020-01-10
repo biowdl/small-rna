@@ -108,4 +108,18 @@ workflow SmallRna {
         Array[File] bamIndexes = sampleWorkflow.bamIndex
         Array[File] qcReports = flatten(sampleWorkflow.qcReports)
     }
+
+    parameter_meta {
+        sampleConfigFile: {description: "The samplesheet, including sample ids, library ids, readgroup ids and fastq file locations.",
+                           category: "required"}
+        outputDir: {description: "The directory the output should be written to.", category: "common"}
+        bowtieIndexFiles: {description: "The bowtie index files.", category: "required"}
+        platform: {description: "The platform used for sequencing.", category: "advanced"}
+        gtfFiles: {description: "The GTF files containing the gene annotations to use for expression quantification.",
+                   category: "required"}
+        stranded: {description: "Whether or not the data is stranded: yes, no or reverse.", category: "common"}
+        runMultiQC: {description: "Whether or not MultiQC should be run.", category: "advanced"}
+        dockerImagesFile: {description: "A YAML file describing the docker image used for the tasks. The dockerImages.yml provided with the pipeline is recommended.",
+                           category: "advanced"}
+    }
 }
