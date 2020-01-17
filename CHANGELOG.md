@@ -11,7 +11,10 @@ that users understand how the changes affect the new version.
 
 version 1.2.0-dev
 -----------------
-+ Update QC submodule to latest version
++ Added an overview of all inputs to the docs.
++ Added parameter_meta.
++ Added wdl-aid to linting.
++ Update QC submodule to latest version.
 + Added miniwdl to linting.
 
 
