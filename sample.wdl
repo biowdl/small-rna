@@ -112,12 +112,8 @@ workflow SampleWorkflow {
 
     output {
         Array[File] countTables = HTSeqCount.counts
-        File bam = if defined(umiDeduplication)
-            then select_first([umiDedup.deduppedBam])
-            else samtoolsMerge.outputBam
-        File bamIndex = if defined(umiDeduplication)
-            then select_first([umiDedup.deduppedBamIndex])
-            else samtoolsMerge.outputBamIndex
+        File bam = select_first([umiDedup.deduppedBam, samtoolsMerge.outputBam])
+        File bamIndex = select_first([umiDedup.deduppedBamIndex, samtoolsMerge.outputBamIndex])
         File? umiEditDistance = umiDedup.editDistance
         File? umiStats = umiDedup.umiStats
         File? umiPositionStats = umiDedup.positionStats
