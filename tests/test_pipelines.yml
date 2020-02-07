@@ -33,6 +33,28 @@
         - "ENSG00000210049"
     - path: "test-output/merged_counts_hsa.gff3.tsv"
 
+- name: SingleEndUmi
+  tags:
+    - integration
+    - no_docker_conf
+    - umi
+  command: cromwell run -i tests/integration/SingleEndUmi.json -o tests/cromwell_options.json small-rna.wdl
+  files:
+    - path: "test-output/SRR8704569/SRR8704569.dedup.bam"
+    - path: "test-output/SRR8704569/SRR8704569.dedup.bai"
+    - path: "test-output/SRR8704570/SRR8704570.dedup.bam"
+    - path: "test-output/SRR8704570/SRR8704570.dedup.bai"
+
+- name: PairedEndUmi
+  tags:
+    - integration
+    - no_docker_conf
+    - umi
+  command: cromwell run -i tests/integration/PairedEndUmi.json -o tests/cromwell_options.json small-rna.wdl
+  files:
+    - path: "test-output/SRR5087327/SRR5087327.dedup.bam"
+    - path: "test-output/SRR5087327/SRR5087327.dedup.bai"
+
 - name: PairedEndAbsoluteFolder
   tags:
     - integration

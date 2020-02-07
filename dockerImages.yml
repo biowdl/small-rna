@@ -16,3 +16,7 @@ fastqc: "quay.io/biocontainers/fastqc:0.11.7--4"
 htseq: "quay.io/biocontainers/htseq:0.9.1--py36h7eb728f_2"
 multiqc: "quay.io/biocontainers/multiqc:1.7--py_1"
 samtools: "quay.io/biocontainers/samtools:1.8--h46bd0b3_5"
+# "UMI-tools" uses a combined container that has both UMI-tools and samtools
+# quay.io/biocontainers/mulled-v2-509311a44630c01d9cb7d2ac5727725f51ea43af
+# this particular tag has versions umi_tools=0.5.5,samtools=1.9
+umi-tools: "quay.io/biocontainers/mulled-v2-509311a44630c01d9cb7d2ac5727725f51ea43af:6089936aca6219b5bb5f54210ac5eb456c7503f2-0"

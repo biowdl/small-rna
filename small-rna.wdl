@@ -35,6 +35,7 @@ workflow SmallRna {
         String? platform = "illumina"
         Array[GTF]+ gtfFiles
         String stranded = "no"
+        Boolean umiDeduplication  = false
         Boolean runMultiQC = if (outputDir == ".") then false else true
         File dockerImagesFile
     }
@@ -64,6 +65,7 @@ workflow SmallRna {
                 platform = platform,
                 gtfFiles = gtfFiles,
                 stranded = stranded,
+                umiDeduplication = umiDeduplication,
                 dockerImages = dockerImages
         }
         # Create a list of sampleIds
@@ -107,6 +109,9 @@ workflow SmallRna {
         Array[File] bamFiles = sampleWorkflow.bam
         Array[File] bamIndexes = sampleWorkflow.bamIndex
         Array[File] qcReports = flatten(sampleWorkflow.qcReports)
+        Array[File?] umiEditDistance = sampleWorkflow.umiEditDistance
+        Array[File?] umiStats = sampleWorkflow.umiStats
+        Array[File?] umiPositionStats = sampleWorkflow.umiPositionStats
     }
 
     parameter_meta {
@@ -118,6 +123,7 @@ workflow SmallRna {
         gtfFiles: {description: "The GTF files containing the gene annotations to use for expression quantification.",
                    category: "required"}
         stranded: {description: "Whether or not the data is stranded: yes, no or reverse.", category: "common"}
+        umiDeduplication: {description: "Whether or not UMI based deduplication should be performed.", category: "common"}
         runMultiQC: {description: "Whether or not MultiQC should be run.", category: "advanced"}
         dockerImagesFile: {description: "A YAML file describing the docker image used for the tasks. The dockerImages.yml provided with the pipeline is recommended.",
                            category: "advanced"}
