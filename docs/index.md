@@ -49,6 +49,20 @@ For an overview of all available inputs, see [this page](./inputs.html).
 }
 ```
 
+Some additional iputs which may be of interest:
+```JSON
+{
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.adapterForward": "Used to set a forward read adapter. Default: Illumina Universal Adapter  AGATCGGAAGAG",
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.adapterReverse": "Used to set a reverse read adapter (for paired-end reads). Default: Illumina Universal Adapter  AGATCGGAAGAG",
+  "SmallRna.umiDeduplication": "Whether or not UMI based deduplication should be run. See the notes below on UMIs."
+}
+
+UMIs are expected to have been extracted from the input fastq files and added to the
+headers of the reads. A tool like [UMI-tools](https://umi-tools.readthedocs.io/en/latest/)
+may be used to do so. Please be aware that different library preparation protocols
+will put the UMIs in different locations in your reads, so be careful when extracting
+the UMIs!
+
 #### Sample configuration
 
 ##### Verification
