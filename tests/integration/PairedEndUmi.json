@@ -1,0 +1,19 @@
+{
+  "SmallRna.sampleConfigFile": "tests/samplesheets/PairedEndUmi.yml",
+  "SmallRna.bowtieIndexFiles": [
+    "tests/data/reference/bowtie/reference.1.ebwt",
+    "tests/data/reference/bowtie/reference.2.ebwt",
+    "tests/data/reference/bowtie/reference.3.ebwt",
+    "tests/data/reference/bowtie/reference.4.ebwt",
+    "tests/data/reference/bowtie/reference.rev.1.ebwt",
+    "tests/data/reference/bowtie/reference.rev.2.ebwt"
+  ],
+  "SmallRna.gtfFiles": [
+    {"path": "tests/data/ensembl.gtf",
+      "idattr": "gene_id"}
+  ],
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.adapterForward": "AGATCGGAAGAG",
+  "SmallRna.sampleWorkflow.SampleWorkflow.QualityControl.adapterReverse": "GATCGTCGGACT",
+  "SmallRna.dockerImagesFile": "dockerImages.yml",
+  "SmallRna.umiDeduplication": true
+}

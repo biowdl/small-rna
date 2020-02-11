@@ -25,6 +25,7 @@ import "QC/QC.wdl" as QC
 import "tasks/bowtie.wdl" as bowtie
 import "tasks/samtools.wdl" as samtools
 import "tasks/htseq.wdl" as htseq
+import "tasks/umi-tools.wdl" as umiTools
 
 workflow SampleWorkflow {
     input {
@@ -34,6 +35,7 @@ workflow SampleWorkflow {
         String? platform = "illumina"
         Array[GTF]+ gtfFiles
         String stranded
+        Boolean umiDeduplication  = false
         Map[String, String] dockerImages
     }
 
@@ -65,6 +67,8 @@ workflow SampleWorkflow {
                 outputPath = outputDir + "/" + readgroupIdentifier  + "/" + readgroupIdentifier + ".bam",
                 dockerImage = dockerImages["bowtie"]
         }
+
+        Boolean paired = defined(readgroup.R2)
     }
 
     call samtools.Merge as samtoolsMerge {
@@ -74,9 +78,21 @@ workflow SampleWorkflow {
             dockerImage = dockerImages["samtools"]
     }
 
+    if (umiDeduplication) {
+        call umiTools.Dedup as umiDedup {
+            input:
+                inputBam = samtoolsMerge.outputBam,
+                inputBamIndex = samtoolsMerge.outputBamIndex,
+                outputBamPath = outputDir + "/" + sample.id + ".dedup.bam",
+                statsPrefix = outputDir + "/" + sample.id,
+                paired = paired[0], # Assumes that if one readgroup is paired, all are
+                dockerImage = dockerImages["umi-tools"]
+        }
+    }
+
     call samtools.SortByName as samtoolsSort {
         input:
-            bamFile = samtoolsMerge.outputBam,
+            bamFile = select_first([umiDedup.deduppedBam, samtoolsMerge.outputBam]),
             dockerImage = dockerImages["samtools"]
     }
 
@@ -96,8 +112,11 @@ workflow SampleWorkflow {
 
     output {
         Array[File] countTables = HTSeqCount.counts
-        File bam = samtoolsMerge.outputBam
-        File bamIndex = samtoolsMerge.outputBamIndex
+        File bam = select_first([umiDedup.deduppedBam, samtoolsMerge.outputBam])
+        File bamIndex = select_first([umiDedup.deduppedBamIndex, samtoolsMerge.outputBamIndex])
+        File? umiEditDistance = umiDedup.editDistance
+        File? umiStats = umiDedup.umiStats
+        File? umiPositionStats = umiDedup.positionStats
         Array[File] qcReports = flatten(QualityControl.reports)
         Boolean finished = true
     }
@@ -109,6 +128,7 @@ workflow SampleWorkflow {
         platform: {description: "The platform used for sequencing.", category: "advanced"}
         gtfFiles: {description: "The reference GTF files.", category: "required"}
         stranded: {description: "Whether or not the data is stranded: yes, no or reverse.", category: "required"}
+        umiDeduplication: {description: "Whether or not UMI based deduplication should be performed.", category: "common"}
         dockerImages: {description: "The docker image used for this task. Changing this may result in errors which the developers may choose not to address.",
                        category: "advanced"}
     }

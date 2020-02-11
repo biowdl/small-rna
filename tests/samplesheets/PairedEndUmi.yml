@@ -1,0 +1,13 @@
+samples:
+  - id: SRR5087327
+    libraries:
+      - id: lib1
+        readgroups:
+          - id: rg1
+            reads:
+              R1: tests/data/SRR5087327_umi_R1.fq.gz
+              R2: tests/data/SRR5087327_umi_R2.fq.gz
+          - id: rg2
+            reads:
+              R1: tests/data/SRR5087327_umi_R1.fq.gz
+              R2: tests/data/SRR5087327_umi_R2.fq.gz
