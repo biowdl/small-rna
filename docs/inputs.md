@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Inputs
+title: "Inputs: SmallRna"
 ---
 
 # Inputs for SmallRna
@@ -64,6 +64,11 @@ SmallRna.
 <dd>
     <i>String </i><i>&mdash; Default:</i> <code>"no"</code><br />
     Whether or not the data is stranded: yes, no or reverse.
+</dd>
+<dt id="SmallRna.umiDeduplication"><a href="#SmallRna.umiDeduplication">SmallRna.umiDeduplication</a></dt>
+<dd>
+    <i>Boolean </i><i>&mdash; Default:</i> <code>false</code><br />
+    Whether or not UMI based deduplication should be performed.
 </dd>
 </dl>
 
@@ -840,6 +845,11 @@ SmallRna.
 <dd>
     <i>Boolean </i><i>&mdash; Default:</i> <code>true</code><br />
     Equivalent to samtools merge's `-f` flag.
+</dd>
+<dt id="SmallRna.sampleWorkflow.umiDedup.memory"><a href="#SmallRna.sampleWorkflow.umiDedup.memory">SmallRna.sampleWorkflow.umiDedup.memory</a></dt>
+<dd>
+    <i>String </i><i>&mdash; Default:</i> <code>"20G"</code><br />
+    The amount of memory required for the task.
 </dd>
 </dl>
 </details>
