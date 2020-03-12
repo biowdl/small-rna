@@ -35,8 +35,11 @@ workflow SampleWorkflow {
         String? platform = "illumina"
         Array[GTF]+ gtfFiles
         String stranded
-        Boolean umiDeduplication  = false
+        Boolean umiDeduplication = false
+        Boolean collectUmiStats = false
         Map[String, String] dockerImages
+
+        String? DONOTDEFINE
     }
 
     Array[Readgroup] readgroups = sample.readgroups
@@ -84,7 +87,9 @@ workflow SampleWorkflow {
                 inputBam = samtoolsMerge.outputBam,
                 inputBamIndex = samtoolsMerge.outputBamIndex,
                 outputBamPath = outputDir + "/" + sample.id + ".dedup.bam",
-                statsPrefix = outputDir + "/" + sample.id,
+                statsPrefix = if collectUmiStats
+                    then outputDir + "/" + sample.id
+                    else DONOTDEFINE,
                 paired = paired[0], # Assumes that if one readgroup is paired, all are
                 dockerImage = dockerImages["umi-tools"]
         }
@@ -129,7 +134,14 @@ workflow SampleWorkflow {
         gtfFiles: {description: "The reference GTF files.", category: "required"}
         stranded: {description: "Whether or not the data is stranded: yes, no or reverse.", category: "required"}
         umiDeduplication: {description: "Whether or not UMI based deduplication should be performed.", category: "common"}
+        collectUmiStats: {description: "Whether or not UMI deduplication stats should be collected. This will potentially cause a massive increase in memory usage of the deduplication step.", category: "advanced"}
         dockerImages: {description: "The docker image used for this task. Changing this may result in errors which the developers may choose not to address.",
                        category: "advanced"}
+    }
+
+    meta {
+        WDL_AID: {
+            exclude: ["DONOTDEFINE"]
+        }
     }
 }
