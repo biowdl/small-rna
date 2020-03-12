@@ -1,0 +1,3 @@
+"sample","library","readgroup","R1","R1_md5","R2","R2_md5"
+"SRR8704569","lib1","rg1","tests/data/SRR8704569_umi_hash.fq.gz",,,
+"SRR8704570","lib1","rg1","tests/data/SRR8704570_umi_hash.fq.gz",,,
