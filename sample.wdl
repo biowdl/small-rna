@@ -36,6 +36,7 @@ workflow SampleWorkflow {
         Array[GTF]+ gtfFiles
         String stranded
         Boolean umiDeduplication = false
+        String umiSeparator = "_"
         Boolean collectUmiStats = false
         Map[String, String] dockerImages
 
@@ -86,6 +87,7 @@ workflow SampleWorkflow {
             input:
                 inputBam = samtoolsMerge.outputBam,
                 inputBamIndex = samtoolsMerge.outputBamIndex,
+                umiSeparator = umiSeparator,
                 outputBamPath = outputDir + "/" + sample.id + ".dedup.bam",
                 statsPrefix = if collectUmiStats
                     then outputDir + "/" + sample.id
@@ -134,6 +136,7 @@ workflow SampleWorkflow {
         gtfFiles: {description: "The reference GTF files.", category: "required"}
         stranded: {description: "Whether or not the data is stranded: yes, no or reverse.", category: "required"}
         umiDeduplication: {description: "Whether or not UMI based deduplication should be performed.", category: "common"}
+        umiSeparator: {description: "Seperator for UMI sequence, default with '_'", category: "advanced"}
         collectUmiStats: {description: "Whether or not UMI deduplication stats should be collected. This will potentially cause a massive increase in memory usage of the deduplication step.", category: "advanced"}
         dockerImages: {description: "The docker image used for this task. Changing this may result in errors which the developers may choose not to address.",
                        category: "advanced"}
