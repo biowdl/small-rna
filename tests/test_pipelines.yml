@@ -45,6 +45,18 @@
     - path: "test-output/SRR8704570/SRR8704570.dedup.bam"
     - path: "test-output/SRR8704570/SRR8704570.dedup.bai"
 
+- name: SingleEndUmiHashSep
+  tags:
+    - integration
+    - no_docker_conf
+    - umi
+  command: cromwell run -i tests/integration/SingleEndUmiHashSep.json -o tests/cromwell_options.json small-rna.wdl
+  files:
+    - path: "test-output/SRR8704569/SRR8704569.dedup.bam"
+    - path: "test-output/SRR8704569/SRR8704569.dedup.bai"
+    - path: "test-output/SRR8704570/SRR8704570.dedup.bam"
+    - path: "test-output/SRR8704570/SRR8704570.dedup.bai"
+
 - name: PairedEndUmi
   tags:
     - integration

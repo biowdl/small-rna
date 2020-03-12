@@ -36,6 +36,7 @@ workflow SmallRna {
         Array[GTF]+ gtfFiles
         String stranded = "no"
         Boolean umiDeduplication  = false
+        String umiSeparator = "_"
         Boolean runMultiQC = if (outputDir == ".") then false else true
         File dockerImagesFile
     }
@@ -66,6 +67,7 @@ workflow SmallRna {
                 gtfFiles = gtfFiles,
                 stranded = stranded,
                 umiDeduplication = umiDeduplication,
+                umiSeparator = umiSeparator,
                 dockerImages = dockerImages
         }
         # Create a list of sampleIds
@@ -124,6 +126,7 @@ workflow SmallRna {
                    category: "required"}
         stranded: {description: "Whether or not the data is stranded: yes, no or reverse.", category: "common"}
         umiDeduplication: {description: "Whether or not UMI based deduplication should be performed.", category: "common"}
+        umiSeparator: {description: "Seperator for UMI sequence, default with '_'", category: "advanced"}
         runMultiQC: {description: "Whether or not MultiQC should be run.", category: "advanced"}
         dockerImagesFile: {description: "A YAML file describing the docker image used for the tasks. The dockerImages.yml provided with the pipeline is recommended.",
                            category: "advanced"}
